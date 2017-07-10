@@ -26,6 +26,7 @@ public abstract class easyTemplateParent<T extends ExpandableItemData, H extends
     private T item;
     public RelativeLayout adjustmentlayout;
 
+    @SuppressWarnings("WrongViewCast")
     public easyTemplateParent(View itemView) {
         super(itemView);
         text = (B) itemView.findViewById(R.id.exp_section_title);

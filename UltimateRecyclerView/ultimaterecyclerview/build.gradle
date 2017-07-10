@@ -12,6 +12,14 @@ android {
 
     }
     buildTypes {
+        libraryVariants.all { variant ->
+            variant.outputs.each { output ->
+                def filename = output.outputFile.name
+                filename = filename.replace('.aar', '-' + defaultConfig.versionName + '.aar')
+                output.outputFile = new File(output.outputFile.parent, filename)
+            }
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -22,15 +30,33 @@ android {
     }
 }
 
+repositories {
+    mavenLocal()
+    flatDir {
+        dirs './libs'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY}"
     compile "com.android.support:support-v13:${SUPPORT_LIBRARY}"
     compile "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY}"
-    //compile 'com.nineoldandroids:library:2.4.0'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+
+    compile "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
+    compile "com.github.bumptech.glide:okhttp3-integration:${GLIDE_VERSION}"
+    compile ("com.github.bumptech.glide:recyclerview-integration:${GLIDE_VERSION}") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
+    annotationProcessor "com.github.bumptech.glide:compiler:${GLIDE_VERSION}"
+
+    fileTree(dir: 'libs', includes: ['*.aar']).each {
+        File file ->
+            dependencies.add('compile', [name: file.name.lastIndexOf('.').with { it != -1 ? file.name[0..<it] : file.name }, ext: 'aar'])
+    }
 }
 
 //apply from: 'android-release-aar.gradle'

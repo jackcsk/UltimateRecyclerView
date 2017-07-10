@@ -5,13 +5,14 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://maven.google.com" }
     }
 }
 
@@ -25,8 +26,8 @@ ext {
     PUBLISH_GROUP_ID = 'com.marshalchen.ultimaterecyclerview'
     PUBLISH_ARTIFACT_ID = 'library'
 
-    PUBLISH_VERSION = '0.7.2'
-    VERSION_CODE = 25
+    PUBLISH_VERSION = '0.7.3'
+    VERSION_CODE = 26
 
     //your version
 

@@ -9,6 +9,7 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.marshalchen.ultimaterecyclerview.dragsortadapter.DragSortAdapter;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
  * integrated with efficient adapter
  */
 public abstract class easyRegularAdapter<T, BINDHOLDER extends UltimateRecyclerviewViewHolder> extends UltimateViewAdapter {
-    protected List<T> source;
+    protected ArrayList<T> source;
 
 
     /**
@@ -31,7 +32,7 @@ public abstract class easyRegularAdapter<T, BINDHOLDER extends UltimateRecyclerv
      * @param list the list source
      */
     public easyRegularAdapter(List<T> list) {
-        source = list;
+        source = new ArrayList<>(list);
     }
 
 

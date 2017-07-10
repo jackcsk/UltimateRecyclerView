@@ -26,6 +26,7 @@ public abstract class easyTemplateChild<T extends ExpandableItemData, B extends 
         this.offsetMargin = expandSize;
     }
 
+    @SuppressWarnings("WrongViewCast")
     public easyTemplateChild(View itemView) {
         super(itemView);
         text = (B) itemView.findViewById(R.id.exp_section_title);
