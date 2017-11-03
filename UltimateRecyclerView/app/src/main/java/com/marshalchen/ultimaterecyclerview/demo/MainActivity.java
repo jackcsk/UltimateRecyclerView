@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * Created by hesk on 23/5/16.
  */
-public class MainList extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ListView mList;
     LinkedHashMap<String, Class> data = new LinkedHashMap<>();
     ArrayList<Class> o = new ArrayList<>();

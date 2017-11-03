@@ -10,8 +10,8 @@ android {
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION as int
         multiDexEnabled true
 
-        versionCode app_demo_versionCode
-        versionName app_demo_versionName
+        versionCode project.VERSION_CODE as int
+        versionName project.VERSION_NAME
     }
     buildTypes {
         release {
@@ -48,5 +48,9 @@ dependencies {
     compile 'com.android.support:multidex:1.0.2'
 
     compile project(':ultimaterecyclerview')
-    //used in the gridlayout
+
+    androidTestCompile('com.android.support:multidex-instrumentation:1.0.2') {
+        exclude group: 'com.android.support', module: 'multidex'
+    }
+    compile 'com.android.support:multidex:1.0.2'
 }

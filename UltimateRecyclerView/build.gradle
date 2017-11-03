@@ -26,9 +26,10 @@ ext {
     PUBLISH_GROUP_ID = 'com.marshalchen.ultimaterecyclerview'
     PUBLISH_ARTIFACT_ID = 'library'
 
-    //Application
-    app_demo_versionCode = 25
-    app_demo_versionName = '1.7.2'
+    PUBLISH_VERSION = '0.7.3'
+    VERSION_CODE = 26
+
+    //your version
 
     IS_UPLOADING = project.getGradle().startParameter.taskNames.any { it.contains('bintrayUpload') }
 }

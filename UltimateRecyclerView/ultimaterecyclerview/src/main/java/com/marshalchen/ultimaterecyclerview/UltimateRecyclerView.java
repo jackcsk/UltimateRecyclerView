@@ -220,6 +220,25 @@ public class UltimateRecyclerView extends FrameLayout implements Scrollable {
         return mEmptyView;
     }
 
+    @Override
+    public void setClipToPadding(boolean clipToPadding) {
+        super.setClipToPadding(clipToPadding);
+        if (mRecyclerView != null) {
+            mRecyclerView.setClipToPadding(clipToPadding);
+        }
+    }
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        mRecyclerView.setPadding(left, top, right, bottom);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    public void setPaddingRelative(int start, int top, int end, int bottom) {
+        mRecyclerView.setPaddingRelative(start, top, end, bottom);
+    }
+
     private void setPolicies(final int policyEmtpyView, final int policyInitialization) {
         //  setPolices(policyEmtpyView, policyInitialization);
         policy_empty = policyEmtpyView;
