@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
 import com.marshalchen.ultimaterecyclerview.URLogs;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.marshalchen.ultimaterecyclerview.demo.BuildConfig;
 import com.marshalchen.ultimaterecyclerview.demo.R;
 import com.marshalchen.ultimaterecyclerview.demo.rvComponents.sectionZeroAdapter;
 import com.marshalchen.ultimaterecyclerview.demo.modules.FastBinding;
@@ -28,6 +30,7 @@ import in.srain.cube.views.ptr.indicator.PtrIndicator;
 
 
 public class PullToRefreshActivity extends BasicFunctions implements ActionMode.Callback {
+    private static final String TAG = PullToRefreshActivity.class.getSimpleName();
 
     private CustomUltimateRecyclerview ultimateRecyclerView;
     private sectionZeroAdapter simpleRecyclerViewAdapter = null;
@@ -35,11 +38,16 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
 
     @Override
     protected void onLoadmore() {
-
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onLoadMore");
+        }
     }
 
     @Override
     protected void onFireRefresh() {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onPullToRefresh");
+        }
 //        simpleRecyclerViewAdapter.insertLast("Refresh things");
         //   ultimateRecyclerView.scrollBy(0, -50);
 //        linearLayoutManager.scrollToPosition(0);
@@ -49,14 +57,17 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
 
     @Override
     protected void addButtonTrigger() {
-
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "addButtonTrigger");
+        }
     }
 
     @Override
     protected void removeButtonTrigger() {
-
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "removeButtonTrigger");
+        }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,40 +109,6 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
         });
 
     }
-
-
-//    void refreshingRental() {
-//        rentalsSunHeaderView = new RentalsSunHeaderView(this);
-//        rentalsSunHeaderView.setUp(ultimateRecyclerView.mPtrFrameLayout);
-//
-//        ultimateRecyclerView.mPtrFrameLayout.removePtrUIHandler(materialHeader);
-//        ultimateRecyclerView.mPtrFrameLayout.removePtrUIHandler(storeHouseHeader);
-//        ultimateRecyclerView.mPtrFrameLayout.setHeaderView(rentalsSunHeaderView);
-//        ultimateRecyclerView.mPtrFrameLayout.addPtrUIHandler(rentalsSunHeaderView);
-//        ultimateRecyclerView.mPtrFrameLayout.autoRefresh(false);
-//        ultimateRecyclerView.mPtrFrameLayout.setPtrHandler(new PtrHandler() {
-//            @Override
-//            public boolean checkCanDoRefresh(PtrFrameLayout ptrFrameLayout, View view, View view2) {
-//                boolean canbePullDown = PtrDefaultHandler.checkContentCanBePulledDown(ptrFrameLayout, view, view2);
-//                return canbePullDown;
-//            }
-//
-//            @Override
-//            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-//                ptrFrameLayout.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        simpleRecyclerViewAdapter.insert("Refresh things", 0);
-//                        //   ultimateRecyclerView.scrollBy(0, -50);
-//                        linearLayoutManager.scrollToPosition(0);
-//                        ultimateRecyclerView.mPtrFrameLayout.refreshComplete();
-//                        changeHeaderHandler.sendEmptyMessageDelayed(3, 500);
-//                    }
-//                }, 1800);
-//            }
-//        });
-//
-//    }
 
     void refreshingMaterial() {
         materialHeader = new MaterialHeader(this);

@@ -128,7 +128,6 @@ public class UltimateRecyclerView extends FrameLayout implements Scrollable {
     protected int mFloatingButtonId;
 
     protected int[] defaultSwipeToDismissColors = null;
-    public int showLoadMoreItemNum = 3;
 
     public VerticalSwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -136,7 +135,6 @@ public class UltimateRecyclerView extends FrameLayout implements Scrollable {
     private CustomRelativeWrapper mHeader;
     private int mTotalYScrolled;
 
-    private final float SCROLL_MULTIPLIER = 0.5f;
     private OnParallaxScroll mParallaxScroll;
     private static boolean isParallaxHeader = false;
     private LayoutInflater inflater;
@@ -152,8 +150,6 @@ public class UltimateRecyclerView extends FrameLayout implements Scrollable {
     private static final int SCROLLBARS_VERTICAL = 1;
     private static final int SCROLLBARS_HORIZONTAL = 2;
     private int mScrollbarsStyle;
-    private int mVisibleItemCount = 0;
-    private int mTotalItemCount = 0;
     private int previousTotal = 0;
     private int mFirstVisibleItem;
 
@@ -357,21 +353,30 @@ public class UltimateRecyclerView extends FrameLayout implements Scrollable {
      * Add ScrollBar of Recyclerview
      */
     protected void setScrollbars() {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         switch (mScrollbarsStyle) {
             case SCROLLBARS_VERTICAL:
-                mSwipeRefreshLayout.removeView(mRecyclerView);
-                View verticalView = inflater.inflate(R.layout.vertical_recycler_view, mSwipeRefreshLayout, true);
-                mRecyclerView = (RecyclerView) verticalView.findViewById(R.id.ultimate_list);
+                mRecyclerView.setVerticalScrollBarEnabled(true);
                 break;
             case SCROLLBARS_HORIZONTAL:
-                mSwipeRefreshLayout.removeView(mRecyclerView);
-                View horizontalView = inflater.inflate(R.layout.horizontal_recycler_view, mSwipeRefreshLayout, true);
-                mRecyclerView = (RecyclerView) horizontalView.findViewById(R.id.ultimate_list);
-                break;
-            default:
+                mRecyclerView.setHorizontalScrollBarEnabled(true);
                 break;
         }
+
+//        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        switch (mScrollbarsStyle) {
+//            case SCROLLBARS_VERTICAL:
+//                mSwipeRefreshLayout.removeView(mRecyclerView);
+//                View verticalView = inflater.inflate(R.layout.vertical_recycler_view, mSwipeRefreshLayout, true);
+//                mRecyclerView = (RecyclerView) verticalView.findViewById(R.id.ultimate_list);
+//                break;
+//            case SCROLLBARS_HORIZONTAL:
+//                mSwipeRefreshLayout.removeView(mRecyclerView);
+//                View horizontalView = inflater.inflate(R.layout.horizontal_recycler_view, mSwipeRefreshLayout, true);
+//                mRecyclerView = (RecyclerView) horizontalView.findViewById(R.id.ultimate_list);
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     protected void initAttrs(AttributeSet attrs) {
@@ -428,8 +433,8 @@ public class UltimateRecyclerView extends FrameLayout implements Scrollable {
             }
         }
 
-        mTotalItemCount = layoutManager.getItemCount();
-        mVisibleItemCount = layoutManager.getChildCount();
+        int mTotalItemCount = layoutManager.getItemCount();
+        int mVisibleItemCount = layoutManager.getChildCount();
 
         switch (layoutManagerType) {
             case LINEAR:

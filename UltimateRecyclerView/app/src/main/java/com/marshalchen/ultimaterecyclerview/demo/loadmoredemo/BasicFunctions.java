@@ -253,7 +253,7 @@ public abstract class BasicFunctions extends AppCompatActivity {
 
     protected ActionMode actionMode;
     protected Toolbar toolbar;
-    protected LinearLayoutManager linearLayoutManager;
+    protected LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
     private int moreNum = 2;
     protected boolean isDrag = true, isEnableAutoLoadMore = true, status_progress = false;
     private DragDropTouchListener dragDropTouchListener;

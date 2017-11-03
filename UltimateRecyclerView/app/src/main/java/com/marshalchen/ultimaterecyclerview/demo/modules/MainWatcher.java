@@ -1,7 +1,11 @@
 package com.marshalchen.ultimaterecyclerview.demo.modules;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.support.multidex.MultiDex;
+
+import com.squareup.leakcanary.LeakCanary;
 
 
 /**
@@ -11,6 +15,12 @@ public class MainWatcher extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //CrashWoodpecker.fly().to(this);
+        LeakCanary.install(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }
