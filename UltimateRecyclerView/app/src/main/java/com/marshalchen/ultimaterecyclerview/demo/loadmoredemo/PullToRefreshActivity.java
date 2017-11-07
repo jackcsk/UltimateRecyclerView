@@ -3,22 +3,32 @@ package com.marshalchen.ultimaterecyclerview.demo.loadmoredemo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
 import com.marshalchen.ultimaterecyclerview.URLogs;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
+import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.marshalchen.ultimaterecyclerview.demo.BuildConfig;
 import com.marshalchen.ultimaterecyclerview.demo.R;
 import com.marshalchen.ultimaterecyclerview.demo.rvComponents.sectionZeroAdapter;
 import com.marshalchen.ultimaterecyclerview.demo.modules.FastBinding;
+import com.marshalchen.ultimaterecyclerview.ui.floatingactionbutton.FloatingActionButton;
+import com.marshalchen.ultimaterecyclerview.ui.floatingactionbutton.FloatingActionsMenu;
 
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -32,9 +42,13 @@ import in.srain.cube.views.ptr.indicator.PtrIndicator;
 public class PullToRefreshActivity extends BasicFunctions implements ActionMode.Callback {
     private static final String TAG = PullToRefreshActivity.class.getSimpleName();
 
+    private static final int NUM_SAMPLE_ITEMS = 50;
+
     private CustomUltimateRecyclerview ultimateRecyclerView;
-    private sectionZeroAdapter simpleRecyclerViewAdapter = null;
-    private View floatingButton = null;
+    private SampleDataAdapter sampleDataAdapter;
+    private int numSampleItems = NUM_SAMPLE_ITEMS;
+    private FloatingActionsMenu floatingActionsMenu;
+    private FloatingActionButton starButton;
 
     @Override
     protected void onLoadmore() {
@@ -48,9 +62,6 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "onPullToRefresh");
         }
-//        simpleRecyclerViewAdapter.insertLast("Refresh things");
-        //   ultimateRecyclerView.scrollBy(0, -50);
-//        linearLayoutManager.scrollToPosition(0);
         ultimateRecyclerView.mPtrFrameLayout.refreshComplete();
         changeHeaderHandler.sendEmptyMessageDelayed(0, 500);
     }
@@ -73,8 +84,22 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_refresh_activity);
-        ultimateRecyclerView = (CustomUltimateRecyclerview) findViewById(R.id.custom_ultimate_recycler_view);
+        ultimateRecyclerView = findViewById(R.id.custom_ultimate_recycler_view);
         ultimateRecyclerView.setCustomSwipeToRefresh();
+
+        sampleDataAdapter = new SampleDataAdapter();
+        ultimateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ultimateRecyclerView.setAdapter(sampleDataAdapter);
+
+        floatingActionsMenu = findViewById(R.id.customfloatingActionMenu);
+        starButton = findViewById(R.id.starButton);
+        starButton.setOnClickListener(view -> {
+            Log.d(TAG, "tapped star button");
+            floatingActionsMenu.collapse();
+            numSampleItems++;
+            sampleDataAdapter.notifyDataSetChanged();
+        });
+
         // refreshingMaterial();
         refreshingString();
 
@@ -133,11 +158,7 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                      //  simpleRecyclerViewAdapter.insertLast("Refresh things");
-                        //   ultimateRecyclerView.scrollBy(0, -50);
-                     //   linearLayoutManager.scrollToPosition(0);
                         ultimateRecyclerView.mPtrFrameLayout.refreshComplete();
-                        //   changeHeaderHandler.sendEmptyMessageDelayed(2, 500);
                     }
                 }, 1800);
             }
@@ -233,9 +254,6 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        // frame.refreshComplete();
-//                        simpleRecyclerViewAdapter.insertLast("Refresh things");
-                        //   ultimateRecyclerView.scrollBy(0, -50);
                         linearLayoutManager.scrollToPosition(0);
                         ultimateRecyclerView.mPtrFrameLayout.refreshComplete();
                         if (mLoadTime % 2 == 0)
@@ -244,18 +262,6 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
                 }, 2000);
             }
         });
-    }
-
-    private void toggleSelection(int position) {
-        simpleRecyclerViewAdapter.toggleSelection(position);
-        actionMode.setTitle("Selected " + "1");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-
     }
 
     public int getScreenHeight() {
@@ -269,10 +275,9 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        URLogs.d("actionmode---" + (mode == null));
+        URLogs.d(String.format("actionmode---%s", (mode == null)));
         mode.getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-        //  return false;
     }
 
     /**
@@ -284,7 +289,6 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
      */
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        // swipeToDismissTouchListener.setEnabled(false);
         this.actionMode = mode;
         return false;
     }
@@ -359,5 +363,65 @@ public class PullToRefreshActivity extends BasicFunctions implements ActionMode.
     }
 */
 
+    protected class SampleDataAdapter extends UltimateViewAdapter<SampleViewHolder> {
 
+        @Override
+        public SampleViewHolder newFooterHolder(View view) {
+            return null;
+        }
+
+        @Override
+        public SampleViewHolder newHeaderHolder(View view) {
+            return null;
+        }
+
+        @Override
+        public SampleViewHolder onCreateViewHolder(ViewGroup parent) {
+            return new SampleViewHolder(
+                    LayoutInflater.from(PullToRefreshActivity.this)
+                    .inflate(R.layout.simple_text_viewholder, parent, false)
+            );
+        }
+
+        @Override
+        public int getAdapterItemCount() {
+            return numSampleItems;
+        }
+
+        @Override
+        public long generateHeaderId(int position) {
+            return 0;
+        }
+
+        @Override
+        public void onBindViewHolder(SampleViewHolder holder, int position) {
+            holder.setText(String.format("row %02d", position));
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
+            return null;
+        }
+
+        @Override
+        public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        }
+    }
+
+    protected class SampleViewHolder extends UltimateRecyclerviewViewHolder {
+        protected TextView textLabel;
+
+        public SampleViewHolder(View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(view -> {
+                Log.d(TAG, String.format("tapped on %s", textLabel.getText().toString()));
+            });
+            textLabel = (TextView)findViewByIdEfficient(R.id.textLabel);
+        }
+
+        public void setText(String text) {
+            textLabel.setText(text);
+        }
+    }
 }

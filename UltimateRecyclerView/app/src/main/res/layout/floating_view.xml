@@ -24,6 +24,7 @@
         fab:urv_fab_colorNormal="#ffffff" />
 
     <com.marshalchen.ultimaterecyclerview.ui.floatingactionbutton.FloatingActionButton
+        android:id="@+id/starButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         fab:icon="@drawable/urv_floating_action_button_ic_fab_star"
